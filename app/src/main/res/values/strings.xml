@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Yams</string>
+    <string name="dice1">1</string>
+    <string name="dice2">2</string>
+    <string name="dice3">3</string>
+    <string name="dice4">4</string>
+    <string name="dice5">5</string>
 </resources>

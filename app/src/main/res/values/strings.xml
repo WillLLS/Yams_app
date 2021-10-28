@@ -5,4 +5,6 @@
     <string name="dice3">3</string>
     <string name="dice4">4</string>
     <string name="dice5">5</string>
+    <string name="rollAll">roll\nAll</string>
+    <string name="rollSelected">roll\nSelected</string>
 </resources>

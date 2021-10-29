@@ -3,8 +3,10 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.translation.UiTranslationManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
@@ -16,8 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     YamsDices m_Dices;
     SheetPlayer m_Player;
-    boolean m_choice[]={false,false,false,false,false};
-    String choice;
+    String m_choice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,72 +26,82 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         m_Dices = new YamsDices();
         m_Player = new SheetPlayer("Player");
-        choice="";
+        m_choice="";
+
+        ((Button)findViewById(R.id.rollSelected)).setEnabled(false);
+
+
+        ((ToggleButton) findViewById(R.id.dice1)).toggle();
+        ((ToggleButton) findViewById(R.id.dice2)).toggle();
+        ((ToggleButton) findViewById(R.id.dice3)).toggle();
+        ((ToggleButton) findViewById(R.id.dice4)).toggle();
+        ((ToggleButton) findViewById(R.id.dice5)).toggle();
 
     }
 
-    public void setChoice(){
-        for(int i=0;i<5;i++){
-            if(m_choice[i]==true){
-                choice= choice + Integer.toString(i+1);
-            }
-        }
-    }
 
-    public void diceCheck(Integer id){
-        if(id==R.id.dice1){
-            m_choice[0]=true;
-        }
-        if(id==R.id.dice2){
-            m_choice[1]=true;
-        }
-        if(id==R.id.dice3){
-            m_choice[2]=true;
-        }
-        if(id==R.id.dice4){
-            m_choice[3]=true;
-        }
-        if(id==R.id.dice5){
-            m_choice[4]=true;
-        }
-    }
-
-    public void diceUncheck(Integer id){
-        if(id==R.id.dice1){
-            m_choice[0]=false;
-        }
-        if(id==R.id.dice2){
-            m_choice[1]=false;
-        }
-        if(id==R.id.dice3){
-            m_choice[2]=false;
-        }
-        if(id==R.id.dice4){
-            m_choice[3]=false;
-        }
-        if(id==R.id.dice5){
-            m_choice[4]=false;
-        }
-    }
-
+    /**
+     * fonction permettant de gérer les dés
+     * @param v ToggleButton (dés)
+     */
     public void diceSelected(View v){
-        ToggleButton toggle = (ToggleButton) v;
-        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    toggle.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
-                    diceCheck(v.getId());
-                } else {
-                    toggle.setTextSize(TypedValue.COMPLEX_UNIT_SP,34);
-                    diceUncheck(v.getId());
+        ToggleButton button = (ToggleButton)v;
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                boolean isChecked = button.isChecked();
+                if(isChecked){
+                    button.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+
+                    switch(button.getId()){
+                        case R.id.dice1:
+                            m_choice += "1";
+                            break;
+                        case R.id.dice2:
+                            m_choice += "2";
+                            break;
+                        case R.id.dice3:
+                            m_choice += "3";
+                            break;
+                        case R.id.dice4:
+                            m_choice += "4";
+                            break;
+                        case R.id.dice5:
+                            m_choice += "5";
+                            break;
+                    }
+                }
+                else{
+                    button.setTextSize(TypedValue.COMPLEX_UNIT_SP,34);
+
+                    switch(button.getId()){
+                        case R.id.dice1:
+                            m_choice = m_choice.replace("1","");
+                            break;
+                        case R.id.dice2:
+                            m_choice = m_choice.replace("2","");
+                            break;
+                        case R.id.dice3:
+                            m_choice = m_choice.replace("3","");
+                            break;
+                        case R.id.dice4:
+                            m_choice = m_choice.replace("4","");
+                            break;
+                        case R.id.dice5:
+                            m_choice = m_choice.replace("5","");
+                            break;
+                    }
                 }
             }
         });
     }
 
+    /**
+     * fonction permettant de simuler un lancer de dés préalablement séléctionnés.
+     * @param v Boutton rollSelected
+     */
     public void rollSelected(View v){
-        setChoice();
-        m_Dices.rollYams(choice);
+        m_Dices.rollYams(m_choice);
         setTextDices();
     }
 
@@ -132,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
      * @param v Button rollAll
      */
     public void rollAll(View v){
+        ((Button)findViewById(R.id.rollSelected)).setEnabled(true);
+
         m_Dices.rollYams("12345");
         setTextDices();
     }
-
-
 }

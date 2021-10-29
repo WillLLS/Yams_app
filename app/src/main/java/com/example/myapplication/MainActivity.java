@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -13,12 +15,18 @@ import android.widget.ToggleButton;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    YamsDices m_Dices;
-    SheetPlayer m_Player;
-    String m_choice;
+    private YamsDices m_Dices;
+    private SheetPlayer m_Player;
+    private String m_choice;
+
+    private RecyclerView m_RecycleView;
+    private List<figure> m_ListFigure;
+    private myAdapter m_Adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +36,28 @@ public class MainActivity extends AppCompatActivity {
         m_Player = new SheetPlayer("Player");
         m_choice="";
 
-        ((Button)findViewById(R.id.rollSelected)).setEnabled(false);
+        m_RecycleView = (RecyclerView)findViewById(R.id.recyclerView);
 
+        m_ListFigure = new ArrayList<>();
+        m_ListFigure.add(new figure("Sum of 1","-"));
+        m_ListFigure.add(new figure("Sum of 2","-"));
+        m_ListFigure.add(new figure("Sum of 3","-"));
+        m_ListFigure.add(new figure("Sum of 4","-"));
+        m_ListFigure.add(new figure("Sum of 5","-"));
+        m_ListFigure.add(new figure("Three of a Kind","-"));
+        m_ListFigure.add(new figure("Full House","-"));
+        m_ListFigure.add(new figure("Four of a Kind","-"));
+        m_ListFigure.add(new figure("Small Straight","-"));
+        m_ListFigure.add(new figure("Large Straight","-"));
+        m_ListFigure.add(new figure("Yahtzee","-"));
+        m_ListFigure.add(new figure("Chance","-"));
+
+
+        m_Adapter = new myAdapter(m_ListFigure);
+        m_RecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        m_RecycleView.setAdapter(m_Adapter);
+
+        ((Button)findViewById(R.id.rollSelected)).setEnabled(false);
 
         ((ToggleButton) findViewById(R.id.dice1)).toggle();
         ((ToggleButton) findViewById(R.id.dice2)).toggle();
@@ -38,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         ((ToggleButton) findViewById(R.id.dice5)).toggle();
 
     }
-
 
     /**
      * fonction permettant de gérer les dés

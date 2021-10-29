@@ -1,0 +1,265 @@
+[33mcommit 6f89bf48376c72fa15d4583d365ede2feab7e0ec[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;32mToggleButton_branch[m[33m)[m
+Author: William <lalis.william@gmail.com>
+Date:   Fri Oct 29 15:39:04 2021 +0200
+
+    add functions rollSelected
+
+[1mdiff --git a/.idea/misc.xml b/.idea/misc.xml[m
+[1mindex de83751..7cb2476 100644[m
+[1m--- a/.idea/misc.xml[m
+[1m+++ b/.idea/misc.xml[m
+[36m@@ -4,6 +4,7 @@[m
+     <option name="filePathToZoomLevelMap">[m
+       <map>[m
+         <entry key="..\:/Users/lalis/OneDrive/Bureau/Cours/4A/Programmation/Working Directory App Yams/app/src/main/res/layout/activity_main.xml" value="0.264" />[m
+[32m+[m[32m        <entry key="..\:/Users/lalis/OneDrive/Bureau/Cours/4A/Programmation/Working Directory App Yams/app/src/main/res/layout/ressources.xml" value="0.14375" />[m
+       </map>[m
+     </option>[m
+   </component>[m
+[1mdiff --git a/app/src/main/java/com/example/myapplication/MainActivity.java b/app/src/main/java/com/example/myapplication/MainActivity.java[m
+[1mindex a817fb5..70e9242 100644[m
+[1m--- a/app/src/main/java/com/example/myapplication/MainActivity.java[m
+[1m+++ b/app/src/main/java/com/example/myapplication/MainActivity.java[m
+[36m@@ -3,8 +3,10 @@[m [mpackage com.example.myapplication;[m
+ import androidx.appcompat.app.AppCompatActivity;[m
+ [m
+ import android.os.Bundle;[m
+[32m+[m[32mimport android.util.Log;[m
+ import android.util.TypedValue;[m
+ import android.view.View;[m
+[32m+[m[32mimport android.view.translation.UiTranslationManager;[m
+ import android.widget.Button;[m
+ import android.widget.CompoundButton;[m
+ import android.widget.ToggleButton;[m
+[36m@@ -16,8 +18,7 @@[m [mpublic class MainActivity extends AppCompatActivity {[m
+ [m
+     YamsDices m_Dices;[m
+     SheetPlayer m_Player;[m
+[31m-    boolean m_choice[]={false,false,false,false,false};[m
+[31m-    String choice;[m
+[32m+[m[32m    String m_choice;[m
+ [m
+     @Override[m
+     protected void onCreate(Bundle savedInstanceState) {[m
+[36m@@ -25,72 +26,82 @@[m [mpublic class MainActivity extends AppCompatActivity {[m
+         setContentView(R.layout.activity_main);[m
+         m_Dices = new YamsDices();[m
+         m_Player = new SheetPlayer("Player");[m
+[31m-        choice="";[m
+[32m+[m[32m        m_choice="";[m
+ [m
+[31m-    }[m
+[32m+[m[32m        ((Button)findViewById(R.id.rollSelected)).setEnabled(false);[m
+ [m
+[31m-    public void setChoice(){[m
+[31m-        for(int i=0;i<5;i++){[m
+[31m-            if(m_choice[i]==true){[m
+[31m-                choice= choice + Integer.toString(i+1);[m
+[31m-            }[m
+[31m-        }[m
+[31m-    }[m
+ [m
+[31m-    public void diceCheck(Integer id){[m
+[31m-        if(id==R.id.dice1){[m
+[31m-            m_choice[0]=true;[m
+[31m-        }[m
+[31m-        if(id==R.id.dice2){[m
+[31m-            m_choice[1]=true;[m
+[31m-        }[m
+[31m-        if(id==R.id.dice3){[m
+[31m-            m_choice[2]=true;[m
+[31m-        }[m
+[31m-        if(id==R.id.dice4){[m
+[31m-            m_choice[3]=true;[m
+[31m-        }[m
+[31m-        if(id==R.id.dice5){[m
+[31m-            m_choice[4]=true;[m
+[31m-        }[m
+[31m-    }[m
+[32m+[m[32m        ((ToggleButton) findViewById(R.id.dice1)).toggle();[m
+[32m+[m[32m        ((ToggleButton) findViewById(R.id.dice2)).toggle();[m
+[32m+[m[32m        ((ToggleButton) findViewById(R.id.dice3)).toggle();[m
+[32m+[m[32m        ((ToggleButton) findViewById(R.id.dice4)).toggle();[m
+[32m+[m[32m        ((ToggleButton) findViewById(R.id.dice5)).toggle();[m
+ [m
+[31m-    public void diceUncheck(Integer id){[m
+[31m-        if(id==R.id.dice1){[m
+[31m-            m_choice[0]=false;[m
+[31m-        }[m
+[31m-        if(id==R.id.dice2){[m
+[31m-            m_choice[1]=false;[m
+[31m-        }[m
+[31m-        if(id==R.id.dice3){[m
+[31m-            m_choice[2]=false;[m
+[31m-        }[m
+[31m-        if(id==R.id.dice4){[m
+[31m-            m_choice[3]=false;[m
+[31m-        }[m
+[31m-        if(id==R.id.dice5){[m
+[31m-            m_choice[4]=false;[m
+[31m-        }[m
+     }[m
+ [m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * fonction permettant de gérer les dés[m
+[32m+[m[32m     * @param v ToggleButton (dés)[m
+[32m+[m[32m     */[m
+     public void diceSelected(View v){[m
+[31m-        ToggleButton toggle = (ToggleButton) v;[m
+[31m-        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {[m
+[31m-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {[m
+[31m-                if (isChecked) {[m
+[31m-                    toggle.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);[m
+[31m-                    diceCheck(v.getId());[m
+[31m-                } else {[m
+[31m-                    toggle.setTextSize(TypedValue.COMPLEX_UNIT_SP,34);[m
+[31m-                    diceUncheck(v.getId());[m
+[32m+[m[32m        ToggleButton button = (ToggleButton)v;[m
+[32m+[m[32m        button.setOnClickListener(new View.OnClickListener() {[m
+[32m+[m[32m            @Override[m
+[32m+[m[32m            public void onClick(View v){[m
+[32m+[m[32m                boolean isChecked = button.isChecked();[m
+[32m+[m[32m                if(isChecked){[m
+[32m+[m[32m                    button.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);[m
+[32m+[m
+[32m+[m[32m                    switch(button.getId()){[m
+[32m+[m[32m                        case R.id.dice1:[m
+[32m+[m[32m                            m_choice += "1";[m
+[32m+[m[32m                            break;[m
+[32m+[m[32m                        case R.id.dice2:[m
+[32m+[m[32m                            m_choice += "2";[m
+[32m+[m[32m                            break;[m
+[32m+[m[32m                        case R.id.dice3:[m
+[32m+[m[32m                            m_choice += "3";[m
+[32m+[m[32m                            break;[m
+[32m+[m[32m                        case R.id.dice4:[m
+[32m+[m[32m                            m_choice += "4";[m
+[32m+[m[32m                            break;[m
+[32m+[m[32m                        case R.id.dice5:[m
+[32m+[m[32m                            m_choice += "5";[m
+[32m+[m[32m                            break;[m
+[32m+[m[32m                    }[m
+[32m+[m[32m                }[m
+[32m+[m[32m                else{[m
+[32m+[m[32m                    button.setTextSize(TypedValue.COMPLEX_UNIT_SP,34);[m
+[32m+[m
+[32m+[m[32m                    switch(button.getId()){[m
+[32m+[m[32m                        case R.id.dice1:[m
+[32m+[m[32m                            m_choice = m_choice.replace("1","");[m
+[32m+[m[32m                            break;[m
+[32m+[m[32m                        case R.id.dice2:[m
+[32m+[m[32m                            m_choice = m_choice.replace("2","");[m
+[32m+[m[32m                            break;[m
+[32m+[m[32m                        case R.id.dice3:[m
+[32m+[m[32m                            m_choice = m_choice.replace("3","");[m
+[32m+[m[32m                            break;[m
+[32m+[m[32m                        case R.id.dice4:[m
+[32m+[m[32m                            m_choice = m_choice.replace("4","");[m
+[32m+[m[32m                            break;[m
+[32m+[m[32m                        case R.id.dice5:[m
+[32m+[m[32m                            m_choice = m_choice.replace("5","");[m
+[32m+[m[32m                            break;[m
+[32m+[m[32m                    }[m
+                 }[m
+             }[m
+         });[m
+     }[m
+ [m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * fonction permettant de simuler un lancer de dés préalablement séléctionnés.[m
+[32m+[m[32m     * @param v Boutton rollSelected[m
+[32m+[m[32m     */[m
+     public void rollSelected(View v){[m
+[31m-        setChoice();[m
+[31m-        m_Dices.rollYams(choice);[m
+[32m+[m[32m        m_Dices.rollYams(m_choice);[m
+         setTextDices();[m
+     }[m
+ [m
+[36m@@ -132,9 +143,9 @@[m [mpublic class MainActivity extends AppCompatActivity {[m
+      * @param v Button rollAll[m
+      */[m
+     public void rollAll(View v){[m
+[32m+[m[32m        ((Button)findViewById(R.id.rollSelected)).setEnabled(true);[m
+[32m+[m
+         m_Dices.rollYams("12345");[m
+         setTextDices();[m
+     }[m
+[31m-[m
+[31m-[m
+ }[m
+\ No newline at end of file[m
+[1mdiff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml[m
+[1mindex 31c14a4..6373193 100644[m
+[1m--- a/app/src/main/res/layout/activity_main.xml[m
+[1m+++ b/app/src/main/res/layout/activity_main.xml[m
+[36m@@ -31,8 +31,7 @@[m
+             android:text="@string/dice1"[m
+             android:textOff="@string/dice1"[m
+             android:textOn="@string/dice1"[m
+[31m-            android:textSize="34sp"[m
+[31m-            android:checked="false"/>[m
+[32m+[m[32m            android:textSize="34sp" />[m
+ [m
+         <ToggleButton[m
+             android:id="@+id/dice2"[m
+[36m@@ -40,7 +39,6 @@[m
+             android:layout_height="match_parent"[m
+             android:layout_weight="1"[m
+             android:backgroundTint="@color/white"[m
+[31m-            android:checked="false"[m
+             android:onClick="diceSelected"[m
+             android:text="@string/dice2"[m
+             android:textOff="@string/dice2"[m
+[36m@@ -57,8 +55,7 @@[m
+             android:text="@string/dice3"[m
+             android:textOff="@string/dice3"[m
+             android:textOn="@string/dice3"[m
+[31m-            android:textSize="34sp"[m
+[31m-            android:checked="false"/>[m
+[32m+[m[32m            android:textSize="34sp" />[m
+ [m
+         <ToggleButton[m
+             android:id="@+id/dice4"[m
+[36m@@ -70,8 +67,7 @@[m
+             android:text="@string/dice4"[m
+             android:textOff="@string/dice4"[m
+             android:textOn="@string/dice4"[m
+[31m-            android:textSize="34sp"[m
+[31m-            android:checked="false"/>[m
+[32m+[m[32m            android:textSize="34sp" />[m
+ [m
+         <ToggleButton[m
+             android:id="@+id/dice5"[m
+[36m@@ -83,8 +79,7 @@[m
+             android:text="@string/dice5"[m
+             android:textOff="@string/dice5"[m
+             android:textOn="@string/dice5"[m
+[31m-            android:textSize="34sp"[m
+[31m-            android:checked="false"/>[m
+[32m+[m[32m            android:textSize="34sp" />[m
+     </LinearLayout>[m
+ [m
+     <Button[m
+[36m@@ -203,4 +198,19 @@[m
+         app:layout_constraintBottom_toBottomOf="@+id/textView5"[m
+         app:layout_constraintStart_toEndOf="@+id/textView5" />[m
+ [m
+[32m+[m[32m    <androidx.recyclerview.widget.RecyclerView[m
+[32m+[m[32m        android:id="@+id/recyclerView"[m
+[32m+[m[32m        android:layout_width="0dp"[m
+[32m+[m[32m        android:layout_height="0dp"[m
+[32m+[m[32m        android:layout_marginStart="8dp"[m
+[32m+[m[32m        android:layout_marginTop="8dp"[m
+[32m+[m[32m        android:layout_marginEnd="8dp"[m
+[32m+[m[32m        android:layout_marginBottom="8dp"[m
+[32m+[m[32m        app:layout_constraintBottom_toBottomOf="parent"[m
+[32m+[m[32m        app:layout_constraintEnd_toEndOf="parent"[m
+[32m+[m[32m        app:layout_constraintHorizontal_bias="1.0"[m
+[32m+[m[32m        app:layout_constraintStart_toStartOf="parent"[m
+[32m+[m[32m        app:layout_constraintTop_toBottomOf="@+id/textView5"[m
+[32m+[m[32m        app:layout_constraintVertical_bias="0.076" />[m
+[32m+[m
+ </androidx.constraintlayout.widget.ConstraintLayout>[m
+\ No newline at end of file[m

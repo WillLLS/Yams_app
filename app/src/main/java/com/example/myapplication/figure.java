@@ -14,11 +14,11 @@ public class figure {
         return m_name;
     }
 
-    public String getClicked() {
+    public String getScore() {
         return m_score;
     }
 
-    public void setScore(String clicked) {
-        this.m_score = clicked;
+    public void setScore(String score) {
+        this.m_score = score;
     }
 }

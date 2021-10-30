@@ -70,18 +70,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void nextRound(){
+        List<figure> list = m_Adapter.getFigure();
 
-        Log.d("Item id ",m_ListFigure.get(2).getClicked());
+        Log.d("Index Figure ",Integer.toString(m_Adapter.getIndexfigure()));
 
         for(int i=0;i<12;i++){
-            if(m_ListFigure.get(i).getClicked()=="CLICKED"){
-                m_index = i;
-            }
-            else{
-                m_index=-1;
-            }
+            Log.d("Index"+Integer.toString(i),list.get(i).getScore());
+
         }
-        //Log.d("Index",Integer.toString(m_index));
     }
 
     /**
@@ -164,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
         ToggleButton dice3 = ((ToggleButton)findViewById(R.id.dice3));
         ToggleButton dice4 = ((ToggleButton)findViewById(R.id.dice4));
         ToggleButton dice5 = ((ToggleButton)findViewById(R.id.dice5));
-
 
         dice1.setText(Integer.toString(m_Dices.dice5[0].diceValue));
         dice1.setTextOn(Integer.toString(m_Dices.dice5[0].diceValue));

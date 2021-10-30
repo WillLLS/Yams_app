@@ -32,6 +32,17 @@ public class SheetPlayer {
         m_pScore=new int[13];
     }
 
+    public int getRound(){
+        return m_round;
+    }
+
+    public void setRound(int round){
+        this.m_round=round;
+    }
+
+
+
+
     /**
      * @fn public void printScore(void)
      * @brief Permet d'afficher la console de jeu.

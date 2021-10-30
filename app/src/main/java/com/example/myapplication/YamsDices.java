@@ -286,7 +286,7 @@ public class YamsDices {
     public int getScore(int indexFigure){
         int score=0;
         if(indexFigure<6){
-            score=getSum(indexFigure); // Récupération du score pour les permières figures
+            score=getSum(indexFigure); // Récupération du score pour les premières figures
         }
         else if(5<indexFigure && indexFigure<13){
             score=getSum2(indexFigure); // Récupération du score pour les dernières figures

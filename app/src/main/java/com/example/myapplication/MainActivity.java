@@ -8,12 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.translation.UiTranslationManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +21,13 @@ public class MainActivity extends AppCompatActivity {
     private SheetPlayer m_Player;
     private String m_choice;
 
+    private boolean start = false;
+
     private RecyclerView m_RecycleView;
     private List<figure> m_ListFigure;
     private myAdapter m_Adapter;
 
+    private int m_index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,23 +36,24 @@ public class MainActivity extends AppCompatActivity {
         m_Dices = new YamsDices();
         m_Player = new SheetPlayer("Player");
         m_choice="";
+        m_index=0;
 
         m_RecycleView = (RecyclerView)findViewById(R.id.recyclerView);
 
-        m_ListFigure = new ArrayList<>();
-        m_ListFigure.add(new figure("Sum of 1","-"));
-        m_ListFigure.add(new figure("Sum of 2","-"));
-        m_ListFigure.add(new figure("Sum of 3","-"));
-        m_ListFigure.add(new figure("Sum of 4","-"));
-        m_ListFigure.add(new figure("Sum of 5","-"));
-        m_ListFigure.add(new figure("Three of a Kind","-"));
-        m_ListFigure.add(new figure("Full House","-"));
-        m_ListFigure.add(new figure("Four of a Kind","-"));
-        m_ListFigure.add(new figure("Small Straight","-"));
-        m_ListFigure.add(new figure("Large Straight","-"));
-        m_ListFigure.add(new figure("Yahtzee","-"));
-        m_ListFigure.add(new figure("Chance","-"));
+        m_ListFigure = new ArrayList<figure>();
 
+        m_ListFigure.add(new figure("Some of 1", "1"));
+        m_ListFigure.add(new figure("Some of 2", "2"));
+        m_ListFigure.add(new figure("Some of 3", "3"));
+        m_ListFigure.add(new figure("Some of 4", "4"));
+        m_ListFigure.add(new figure("Some of 5", "5"));
+        m_ListFigure.add(new figure("Some of 6", "6"));
+        m_ListFigure.add(new figure("Three of a Kind", "7"));
+        m_ListFigure.add(new figure("Full House", "8"));
+        m_ListFigure.add(new figure("Small Straight", "9"));
+        m_ListFigure.add(new figure("Large Straight", "10"));
+        m_ListFigure.add(new figure("Yahtzee", "11"));
+        m_ListFigure.add(new figure("Chance", "12"));
 
         m_Adapter = new myAdapter(m_ListFigure);
         m_RecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
@@ -65,6 +67,21 @@ public class MainActivity extends AppCompatActivity {
         ((ToggleButton) findViewById(R.id.dice4)).toggle();
         ((ToggleButton) findViewById(R.id.dice5)).toggle();
 
+    }
+
+    public void nextRound(){
+
+        Log.d("Item id ",m_ListFigure.get(2).getClicked());
+
+        for(int i=0;i<12;i++){
+            if(m_ListFigure.get(i).getClicked()=="CLICKED"){
+                m_index = i;
+            }
+            else{
+                m_index=-1;
+            }
+        }
+        //Log.d("Index",Integer.toString(m_index));
     }
 
     /**
@@ -123,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void updateRound(String round){
+        ((TextView)findViewById(R.id.numRound)).setText(round);
+    }
+
     /**
      * fonction permettant de simuler un lancer de dés préalablement séléctionnés.
      * @param v Boutton rollSelected
@@ -130,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
     public void rollSelected(View v){
         m_Dices.rollYams(m_choice);
         setTextDices();
+
+        updateRound(String.valueOf(m_Player.getRound()));
     }
 
     /**
@@ -170,9 +193,22 @@ public class MainActivity extends AppCompatActivity {
      * @param v Button rollAll
      */
     public void rollAll(View v){
-        ((Button)findViewById(R.id.rollSelected)).setEnabled(true);
+        if(!start){
+            ((Button)findViewById(R.id.rollSelected)).setEnabled(true);
+            ((TextView)findViewById(R.id.presentation)).setText("");
+            start=true;
+        }
+
+        //Set recycleView value
+        /*
+        m_ListFigure.set(0,new figure("Sum of 1","13"));
+        m_Adapter.setAdapter(m_ListFigure);
+        m_RecycleView.setAdapter(m_Adapter);*/
+
+        nextRound();
 
         m_Dices.rollYams("12345");
         setTextDices();
+        updateRound(String.valueOf(m_Player.getRound()));
     }
 }

@@ -3,32 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:padding="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@color/black"
+        android:orientation="horizontal"
+        android:padding="6dp">
 
         <TextView
             android:id="@+id/figure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3.5"
             android:gravity="fill_vertical"
             android:padding="8dp"
             android:text="figure"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/clicked"
-            android:layout_width="wrap_content"
+            android:layout_width="159dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="fill_vertical"
             android:padding="8dp"
             android:text="clicked"
+            android:textColor="@color/white"
             android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/indexView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0"
+            android:text=""
+            android:visibility="invisible" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,6 +33,17 @@ public class MainActivity extends AppCompatActivity {
 
         m_listView = (ListView)findViewById(R.id.ListView);
 
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        arrayList.add("Sum of 1");
+        arrayList.add("Sum of 2");
+        arrayList.add("Sum of 3");
+        arrayList.add("Sum of 4");
+        arrayList.add("Sum of 5");
+        arrayList.add("Sum of 6");
+
+
+
         ((Button)findViewById(R.id.rollSelected)).setEnabled(false);
 
 

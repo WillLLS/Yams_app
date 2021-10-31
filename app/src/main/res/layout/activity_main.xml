@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_basic"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -26,8 +27,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/polyBlue"
             android:onClick="diceSelected"
+            android:textColor="@color/white"
             android:text="@string/dice1"
             android:textOff="@string/dice1"
             android:textOn="@string/dice1"
@@ -38,7 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/polyBlue"
+            android:textColor="@color/white"
             android:onClick="diceSelected"
             android:text="@string/dice2"
             android:textOff="@string/dice2"
@@ -50,7 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/polyBlue"
+            android:textColor="@color/white"
             android:onClick="diceSelected"
             android:text="@string/dice3"
             android:textOff="@string/dice3"
@@ -62,7 +66,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/polyBlue"
+            android:textColor="@color/white"
             android:onClick="diceSelected"
             android:text="@string/dice4"
             android:textOff="@string/dice4"
@@ -74,7 +79,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/polyBlue"
+            android:textColor="@color/white"
             android:onClick="diceSelected"
             android:text="@string/dice5"
             android:textOff="@string/dice5"
@@ -93,7 +99,9 @@
         android:text="@string/rollAll"
         android:textSize="25sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+
+        />
 
     <Button
         android:id="@+id/rollSelected"
@@ -118,6 +126,7 @@
         android:layout_marginTop="24dp"
         android:background="@color/black"
         android:text="Round "
+        android:padding="5dp"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -129,6 +138,7 @@
         android:layout_height="wrap_content"
         android:background="@color/black"
         android:text="1"
+        android:padding="5dp"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"

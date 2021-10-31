@@ -156,7 +156,7 @@
         app:layout_constraintStart_toEndOf="@+id/Round" />
 
     <TextView
-        android:id="@+id/info"
+        android:id="@+id/presentation"
         android:layout_width="270dp"
         android:layout_height="26dp"
         android:layout_marginStart="16dp"

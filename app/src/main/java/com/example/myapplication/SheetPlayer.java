@@ -34,6 +34,17 @@ public class SheetPlayer {
         m_pScore=new int[13];
     }
 
+    public void reset(){
+        m_totalScore=0;
+        m_pScore=new int[13];
+        m_round=1;
+        m_bonus=false;
+
+        for(int i=0;i<12;i++){
+            m_available[i]=true;
+        }
+    }
+
     public boolean getAvailable(int position){
         return m_available[position];
     }

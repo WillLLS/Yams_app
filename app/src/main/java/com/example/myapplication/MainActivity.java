@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         start=true;
-        set=10;
+        set=0;
 
         m_memoryIndexFigure = -1;
 
@@ -122,12 +123,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         rollSelected.setEnabled(false);
+        rollSelected.setTextColor(Color.BLACK);
 
         ((ToggleButton) findViewById(R.id.dice1)).toggle();
         ((ToggleButton) findViewById(R.id.dice2)).toggle();
         ((ToggleButton) findViewById(R.id.dice3)).toggle();
         ((ToggleButton) findViewById(R.id.dice4)).toggle();
         ((ToggleButton) findViewById(R.id.dice5)).toggle();
+
 
     }
 
@@ -140,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Fonction permettant de gérer le déroulement de la partie
+     */
     public void nextRound(){
         if(set<12){
             m_Player.newRound();
@@ -158,7 +164,8 @@ public class MainActivity extends AppCompatActivity {
                 set += 1;
                 m_Player.setRound(0);
 
-                findViewById(R.id.rollSelected).setEnabled(false);
+                rollSelected.setEnabled(false);
+                rollSelected.setTextColor(Color.BLACK);
             }
 
             Bonus();
@@ -170,10 +177,10 @@ public class MainActivity extends AppCompatActivity {
 
             ((TextView)findViewById(R.id.info)).setText("Game Over - Score : "+String.valueOf(m_Player.getTotalScore()));
 
-            DialogFragment dialogFragment = new DialogFragment();
-
-            rollAll.setEnabled(false);
+            rollAll.setText("RESTART");
             rollSelected.setEnabled(false);
+            rollSelected.setTextColor(Color.BLACK);
+
         }
 
 
@@ -282,25 +289,49 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void reset(){
+        m_Player.reset();
+        rollAll.setText("ROLL\nALL");
+
+        ((TextView)findViewById(R.id.info)).setText("Press 'ROLL ALL' to start a game");
+
+        m_Dices.diceValue(1,2,3,4,5);
+        setTextDices();
+
+        ((TextView)findViewById(R.id.TVScore)).setText("0");
+        ((TextView)findViewById(R.id.Bonus)).setText("0");
+        for(int i=0;i<13;i++){
+            m_ListFigure.get(i).setScore("-");
+        }
+        figureAdapter.notifyDataSetChanged();
+    }
+
     /**
      * Fonction permettant de lancer tous les dés
      * @param v Button rollAll
      */
     public void rollAll(View v){
 
-        m_Dices.rollYams("12345");
-        setTextDices();
-
-        if(start){
-            rollSelected.setEnabled(true);
-            ((TextView)findViewById(R.id.info)).setText("");
-            start=false;
+        if(rollAll.getText()=="RESTART"){
+            reset();
         }
         else {
-            if(!rollSelected.isEnabled()){
+
+            m_Dices.rollYams("12345");
+            setTextDices();
+
+            if (start) {
                 rollSelected.setEnabled(true);
+                rollSelected.setTextColor(Color.WHITE);
+                ((TextView) findViewById(R.id.info)).setText("");
+                start = false;
+            } else {
+                if (!rollSelected.isEnabled()) {
+                    rollSelected.setEnabled(true);
+                    rollSelected.setTextColor(Color.WHITE);
+                }
+                nextRound();
             }
-            nextRound();
         }
     }
 }

@@ -90,14 +90,19 @@
 
     <Button
         android:id="@+id/rollAll"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="154dp"
         android:layout_height="85dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:textColor="@color/white"
         android:backgroundTint="@color/black"
+        app:strokeColor="@color/polyBlue"
+        android:padding="5dp"
         android:onClick="rollAll"
         android:text="@string/rollAll"
         android:textSize="25sp"
+        app:strokeWidth="3dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
 
@@ -105,6 +110,7 @@
 
     <Button
         android:id="@+id/rollSelected"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="178dp"
         android:layout_height="85dp"
         android:layout_marginStart="40dp"
@@ -114,6 +120,10 @@
         android:onClick="rollSelected"
         android:text="@string/rollSelected"
         android:textSize="25sp"
+        android:padding="5dp"
+        android:textColor="@color/white"
+        app:strokeColor="@color/polyBlue"
+        app:strokeWidth="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rollAll"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />

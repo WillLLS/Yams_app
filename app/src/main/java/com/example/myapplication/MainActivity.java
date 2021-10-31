@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     YamsDices m_Dices;
     SheetPlayer m_Player;
     String m_choice;
+    figure Sum1, Sum2, Sum3, Sum4, Sum5, Sum6;
+
+    ArrayList<figure> m_ListFigure;
 
     ListView m_listView;
 
@@ -34,10 +37,24 @@ public class MainActivity extends AppCompatActivity {
         m_Player = new SheetPlayer("Player");
         m_choice="";
 
+        Sum1 = new figure("Sum of 1","-");
+        Sum2 = new figure("Sum of 2","-");
+        Sum3 = new figure("Sum of 3","-");
+        Sum4 = new figure("Sum of 4","-");
+        Sum5 = new figure("Sum of 5","-");
+        Sum6 = new figure("Sum of 6","-");
+
+        m_ListFigure = new ArrayList<>();
+        m_ListFigure.add(Sum1);
+        m_ListFigure.add(Sum2);
+        m_ListFigure.add(Sum3);
+        m_ListFigure.add(Sum4);
+        m_ListFigure.add(Sum5);
+        m_ListFigure.add(Sum6);
+
         m_listView = (ListView)findViewById(R.id.ListView);
 
         ArrayList<String> arrayList = new ArrayList<>();
-
         arrayList.add("Sum of 1");
         arrayList.add("Sum of 2");
         arrayList.add("Sum of 3");
@@ -45,16 +62,19 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add("Sum of 5");
         arrayList.add("Sum of 6");
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_checked,arrayList);
+        //ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,m_ListFigure);
 
-        m_listView.setAdapter(arrayAdapter);
+        MyAdapter figureAdapter = new MyAdapter(this, R.layout.item, m_ListFigure);
 
+        m_listView.setAdapter(figureAdapter);
+
+        /*
         m_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("Item Clicked ", String.valueOf(i));
             }
-        });
+        });*/
 
         ((Button)findViewById(R.id.rollSelected)).setEnabled(false);
 

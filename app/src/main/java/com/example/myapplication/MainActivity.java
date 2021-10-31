@@ -289,6 +289,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Fonction permettant de rejouer une partie
+     */
     public void reset(){
         m_Player.reset();
         rollAll.setText("ROLL\nALL");

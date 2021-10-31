@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -31,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     int m_memoryIndexFigure;
     int m_indexFigure;
 
+    Button rollAll;
+    Button rollSelected;
+
     ArrayList<figure> m_ListFigure;
     MyAdapter figureAdapter;
     ListView m_listView;
@@ -41,9 +46,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         start=true;
-        set=0;
+        set=10;
 
         m_memoryIndexFigure = -1;
+
+        rollAll = (Button)findViewById(R.id.rollAll);
+        rollSelected = (Button)findViewById(R.id.rollSelected);
 
         m_Dices = new YamsDices();
         m_Player = new SheetPlayer("Player");
@@ -111,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ((Button)findViewById(R.id.rollSelected)).setEnabled(false);
+        rollSelected.setEnabled(false);
 
 
         ((ToggleButton) findViewById(R.id.dice1)).toggle();
@@ -124,28 +132,38 @@ public class MainActivity extends AppCompatActivity {
 
     public void nextRound(){
         if(set<12){
+
+            m_Player.newRound();
+            ((TextView)findViewById(R.id.numRound)).setText(String.valueOf(m_Player.getRound()));
+
             if(m_Player.getRound()==3){
 
-                int score = m_Dices.getScore(m_indexFigure);
-                Log.d("Score of "+String.valueOf(m_indexFigure),String.valueOf(score));
+                int score = m_Dices.getScore(m_indexFigure); // Récupération du score pour la figure choisie
+
 
                 m_Player.updateScoring(m_indexFigure,score); // MAJ Score
-                m_ListFigure.get(m_indexFigure).setScore(String.valueOf(score));
-                figureAdapter.notifyDataSetChanged();
+                ((TextView)findViewById(R.id.TVScore)).setText(String.valueOf(m_Player.getTotalScore())); // Ecriture du score
+
+                m_ListFigure.get(m_indexFigure).setScore(String.valueOf(score)); // Actualisation item figure
+                figureAdapter.notifyDataSetChanged(); // Information pour l'adapter d'un changement
+
                 set += 1;
-                start=true;
+                m_Player.setRound(0);
+
+                findViewById(R.id.rollSelected).setEnabled(false);
             }
-
-
-
         }
+
         else{       // Fin de partie
-            Toast.makeText(this,"Partie terminée", Toast.LENGTH_LONG);
+            ((TextView)findViewById(R.id.info)).setText("Game Over");
+
+            rollAll.setEnabled(false);
+            rollSelected.setEnabled(false);
             set=0;
+            start=true;
             m_indexFigure=-1;
         }
 
-        m_indexFigure=0;
 
         Log.d("Round",String.valueOf(m_Player.getRound()));
         Log.d("Set",String.valueOf(set));
@@ -262,10 +280,14 @@ public class MainActivity extends AppCompatActivity {
         setTextDices();
 
         if(start){
-            ((Button)findViewById(R.id.rollSelected)).setEnabled(true);
+            rollSelected.setEnabled(true);
+            ((TextView)findViewById(R.id.info)).setText("");
             start=false;
         }
         else {
+            if(!rollSelected.isEnabled()){
+                rollSelected.setEnabled(true);
+            }
             nextRound();
         }
     }

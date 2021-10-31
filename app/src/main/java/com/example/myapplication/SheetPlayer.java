@@ -40,8 +40,16 @@ public class SheetPlayer {
         return m_available[position];
     }
 
+    public void newRound(){
+        m_round+=1;
+    }
+
     public int getScore(int indexFigure){
         return m_pScore[indexFigure];
+    }
+
+    public int getTotalScore(){
+        return m_totalScore;
     }
 
     public void setRound(int round){

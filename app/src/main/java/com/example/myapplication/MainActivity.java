@@ -1,10 +1,13 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.translation.UiTranslationManager;
 import android.widget.Button;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         m_Dices = new YamsDices();
         m_Player = new SheetPlayer("Player");
         m_choice="";
+
 
         ((Button)findViewById(R.id.rollSelected)).setEnabled(false);
 

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.lang.reflect.Array;
@@ -20,61 +21,95 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private boolean start;
+    private int set;
+
     YamsDices m_Dices;
     SheetPlayer m_Player;
     String m_choice;
-    figure Sum1, Sum2, Sum3, Sum4, Sum5, Sum6;
+
+    int m_memoryIndexFigure;
+    int m_indexFigure;
 
     ArrayList<figure> m_ListFigure;
-
+    MyAdapter figureAdapter;
     ListView m_listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        start=true;
+        set=0;
+
+        m_memoryIndexFigure = -1;
+
         m_Dices = new YamsDices();
         m_Player = new SheetPlayer("Player");
         m_choice="";
 
-        Sum1 = new figure("Sum of 1","-");
-        Sum2 = new figure("Sum of 2","-");
-        Sum3 = new figure("Sum of 3","-");
-        Sum4 = new figure("Sum of 4","-");
-        Sum5 = new figure("Sum of 5","-");
-        Sum6 = new figure("Sum of 6","-");
-
         m_ListFigure = new ArrayList<>();
-        m_ListFigure.add(Sum1);
-        m_ListFigure.add(Sum2);
-        m_ListFigure.add(Sum3);
-        m_ListFigure.add(Sum4);
-        m_ListFigure.add(Sum5);
-        m_ListFigure.add(Sum6);
+        m_ListFigure.add(new figure("Sum of 1","-"));
+        m_ListFigure.add(new figure("Sum of 2","-"));
+        m_ListFigure.add(new figure("Sum of 3","-"));
+        m_ListFigure.add(new figure("Sum of 4","-"));
+        m_ListFigure.add(new figure("Sum of 5","-"));
+        m_ListFigure.add(new figure("Sum of 6","-"));
+        m_ListFigure.add(new figure("Three of a King","-"));
+        m_ListFigure.add(new figure("Full House","-"));
+        m_ListFigure.add(new figure("Four of a Kind","-"));
+        m_ListFigure.add(new figure("Small Straight","-"));
+        m_ListFigure.add(new figure("Large Straight","-"));
+        m_ListFigure.add(new figure("Yahtzee","-"));
+        m_ListFigure.add(new figure("Chance","-"));
 
         m_listView = (ListView)findViewById(R.id.ListView);
 
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("Sum of 1");
-        arrayList.add("Sum of 2");
-        arrayList.add("Sum of 3");
-        arrayList.add("Sum of 4");
-        arrayList.add("Sum of 5");
-        arrayList.add("Sum of 6");
-
-        //ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,m_ListFigure);
-
-        MyAdapter figureAdapter = new MyAdapter(this, R.layout.item, m_ListFigure);
+        figureAdapter = new MyAdapter(this, R.layout.item, m_ListFigure);
 
         m_listView.setAdapter(figureAdapter);
 
-        /*
+
         m_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                if(m_memoryIndexFigure==-1){
+                     m_ListFigure.get(i).setScore("Clicked");
+                     m_indexFigure=i;
+                     m_memoryIndexFigure = i;
+                }
+                else{
+                    if(m_Player.getAvailable(i)==true){
+
+                        if(m_Player.getAvailable(m_memoryIndexFigure)==true){
+                            m_ListFigure.get(m_memoryIndexFigure).setScore("-");
+                        }
+                        else{
+                            m_ListFigure.get(m_memoryIndexFigure).setScore(String.valueOf(m_Player.getScore(m_memoryIndexFigure)));
+                        }
+                        m_ListFigure.get(i).setScore("Clicked");
+                        m_indexFigure=i;
+                        m_memoryIndexFigure = i;
+                    }
+                    else{
+                        m_ListFigure.get(i).setScore("Clicked - " + String.valueOf(m_Player.getScore(i)));
+                        if(m_Player.getAvailable(m_memoryIndexFigure)==true){
+                            m_ListFigure.get(m_memoryIndexFigure).setScore("-");
+                        }
+                        else{
+                            m_ListFigure.get(m_memoryIndexFigure).setScore(String.valueOf(m_Player.getScore(m_memoryIndexFigure)));
+                        }
+                        m_memoryIndexFigure = i;
+                    }
+                }
+                figureAdapter.notifyDataSetChanged();
+
                 Log.d("Item Clicked ", String.valueOf(i));
+                Log.d("IndexSave",String.valueOf(m_indexFigure));
             }
-        });*/
+        });
 
         ((Button)findViewById(R.id.rollSelected)).setEnabled(false);
 
@@ -85,6 +120,35 @@ public class MainActivity extends AppCompatActivity {
         ((ToggleButton) findViewById(R.id.dice4)).toggle();
         ((ToggleButton) findViewById(R.id.dice5)).toggle();
 
+    }
+
+    public void nextRound(){
+        if(set<12){
+            if(m_Player.getRound()==3){
+
+                int score = m_Dices.getScore(m_indexFigure);
+                Log.d("Score of "+String.valueOf(m_indexFigure),String.valueOf(score));
+
+                m_Player.updateScoring(m_indexFigure,score); // MAJ Score
+                m_ListFigure.get(m_indexFigure).setScore(String.valueOf(score));
+                figureAdapter.notifyDataSetChanged();
+                set += 1;
+                start=true;
+            }
+
+
+
+        }
+        else{       // Fin de partie
+            Toast.makeText(this,"Partie terminée", Toast.LENGTH_LONG);
+            set=0;
+            m_indexFigure=-1;
+        }
+
+        m_indexFigure=0;
+
+        Log.d("Round",String.valueOf(m_Player.getRound()));
+        Log.d("Set",String.valueOf(set));
     }
 
 
@@ -151,6 +215,8 @@ public class MainActivity extends AppCompatActivity {
     public void rollSelected(View v){
         m_Dices.rollYams(m_choice);
         setTextDices();
+
+        nextRound();
     }
 
     /**
@@ -191,9 +257,16 @@ public class MainActivity extends AppCompatActivity {
      * @param v Button rollAll
      */
     public void rollAll(View v){
-        ((Button)findViewById(R.id.rollSelected)).setEnabled(true);
 
         m_Dices.rollYams("12345");
         setTextDices();
+
+        if(start){
+            ((Button)findViewById(R.id.rollSelected)).setEnabled(true);
+            start=false;
+        }
+        else {
+            nextRound();
+        }
     }
 }

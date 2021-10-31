@@ -18,7 +18,7 @@ public class SheetPlayer {
     private int[] m_pScore; /** Score de chaque figure */
     private int m_round=1;  /** Indice du round actuel */
     private Boolean m_bonus = false;    /** Active le bonus de point */
-    private byte[] m_available = {0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01,0x01}; /** Determine si la figure est disponible */
+    private boolean[] m_available = {true,true,true,true,true,true,true,true,true,true,true,true,true}; /** Determine si la figure est disponible */
 
     /**
      * @fn SheetPlayer(String name)
@@ -30,6 +30,26 @@ public class SheetPlayer {
         m_name=name;
         m_totalScore=0;
         m_pScore=new int[13];
+    }
+
+    public void setAvailable(int position, boolean bool){
+        m_available[position]=bool;
+    }
+
+    public boolean getAvailable(int position){
+        return m_available[position];
+    }
+
+    public int getScore(int indexFigure){
+        return m_pScore[indexFigure];
+    }
+
+    public void setRound(int round){
+        m_round=round;
+    }
+
+    public int getRound(){
+        return m_round;
     }
 
     /**
@@ -51,7 +71,7 @@ public class SheetPlayer {
 
         for(int indice=0;indice<6;indice++){
             
-            if(m_available[indice]==0x01){
+            if(m_available[indice]==true){
                 System.out.println("[" + choice[indice] + "] sum of " + (indice+1) + " : -" );
             }
             else{
@@ -62,7 +82,7 @@ public class SheetPlayer {
         System.out.println("----subTotal: " + subTotal + " => bonus : "+ ((subTotal>63) ? 35 : 0));
 
         for(int indice=6;indice<13;indice++){
-            if(m_available[indice]==0x01){
+            if(m_available[indice]==true){
                 System.out.println("[" + choice[indice] + "] " + nameFigure[indice-6] + " : -");
             }
             else{
@@ -151,7 +171,7 @@ public class SheetPlayer {
      * @return void
      */
     public void updateScoring(int figureIndex,int score){
-        m_available[figureIndex]=0x00;
+        m_available[figureIndex]=false;
         m_pScore[figureIndex]=score;
         m_totalScore+=score;
         if(m_totalScore>63){

@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -9,7 +8,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.translation.UiTranslationManager;
 import android.widget.AdapterView;
@@ -123,8 +121,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("IndexSave",String.valueOf(m_indexFigure));
             }
         });
-
-        ((Button)findViewById(R.id.rollSelected)).setEnabled(false);
 
         rollSelected.setEnabled(false);
         rollSelected.setTextColor(Color.BLACK);

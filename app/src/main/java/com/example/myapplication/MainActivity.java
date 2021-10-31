@@ -7,9 +7,12 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.translation.UiTranslationManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.lang.reflect.Array;
@@ -42,7 +45,16 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add("Sum of 5");
         arrayList.add("Sum of 6");
 
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_checked,arrayList);
 
+        m_listView.setAdapter(arrayAdapter);
+
+        m_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("Item Clicked ", String.valueOf(i));
+            }
+        });
 
         ((Button)findViewById(R.id.rollSelected)).setEnabled(false);
 

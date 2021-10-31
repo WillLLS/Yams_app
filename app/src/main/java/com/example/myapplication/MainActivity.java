@@ -296,6 +296,9 @@ public class MainActivity extends AppCompatActivity {
         m_Player.reset();
         rollAll.setText("ROLL\nALL");
 
+        start=true;
+        set=0;
+
         ((TextView)findViewById(R.id.info)).setText("Press 'ROLL ALL' to start a game");
 
         m_Dices.diceValue(1,2,3,4,5);

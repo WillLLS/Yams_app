@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.translation.UiTranslationManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.ToggleButton;
 
 import java.lang.reflect.Array;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     SheetPlayer m_Player;
     String m_choice;
 
+    ListView m_listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         m_Dices = new YamsDices();
         m_Player = new SheetPlayer("Player");
         m_choice="";
+
+        m_listView = (ListView)findViewById(R.id.ListView);
 
         ((Button)findViewById(R.id.rollSelected)).setEnabled(false);
 

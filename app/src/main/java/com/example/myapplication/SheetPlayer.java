@@ -7,6 +7,8 @@ package com.example.myapplication;
  * @author William Lalis
  * @date Septembre 2021
  */
+import android.util.Log;
+
 import java.util.Scanner;
 
 
@@ -32,10 +34,6 @@ public class SheetPlayer {
         m_pScore=new int[13];
     }
 
-    public void setAvailable(int position, boolean bool){
-        m_available[position]=bool;
-    }
-
     public boolean getAvailable(int position){
         return m_available[position];
     }
@@ -58,6 +56,24 @@ public class SheetPlayer {
 
     public int getRound(){
         return m_round;
+    }
+
+    public void verifBonus(){
+        int bonus=0;
+        for(int i=0;i<6;i++){
+            if(m_available[i]==false){
+                bonus+= m_pScore[i];
+            }
+        }
+        if(bonus>=63){ ///////////////////////////
+            m_bonus=true;
+        }
+
+        Log.d("Bonus",String.valueOf(m_bonus));
+    }
+
+    public boolean getBonus(){
+        return m_bonus;
     }
 
     /**
@@ -182,9 +198,7 @@ public class SheetPlayer {
         m_available[figureIndex]=false;
         m_pScore[figureIndex]=score;
         m_totalScore+=score;
-        if(m_totalScore>63){
-            m_bonus=true;
-        }
+        verifBonus();
     }
 
     /**

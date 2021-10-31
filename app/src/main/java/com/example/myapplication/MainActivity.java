@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -121,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
 
         rollSelected.setEnabled(false);
 
-
         ((ToggleButton) findViewById(R.id.dice1)).toggle();
         ((ToggleButton) findViewById(R.id.dice2)).toggle();
         ((ToggleButton) findViewById(R.id.dice3)).toggle();
@@ -130,16 +131,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Gestion affichage bonus
+     */
+    public void Bonus(){
+        if(m_Player.getBonus()){
+            ((TextView)findViewById(R.id.Bonus)).setText("35");
+        }
+    }
+
     public void nextRound(){
         if(set<12){
-
             m_Player.newRound();
             ((TextView)findViewById(R.id.numRound)).setText(String.valueOf(m_Player.getRound()));
 
             if(m_Player.getRound()==3){
 
                 int score = m_Dices.getScore(m_indexFigure); // Récupération du score pour la figure choisie
-
 
                 m_Player.updateScoring(m_indexFigure,score); // MAJ Score
                 ((TextView)findViewById(R.id.TVScore)).setText(String.valueOf(m_Player.getTotalScore())); // Ecriture du score
@@ -152,16 +160,20 @@ public class MainActivity extends AppCompatActivity {
 
                 findViewById(R.id.rollSelected).setEnabled(false);
             }
+
+            Bonus();
+
         }
 
         else{       // Fin de partie
-            ((TextView)findViewById(R.id.info)).setText("Game Over");
+            m_Player.totalScore();
+
+            ((TextView)findViewById(R.id.info)).setText("Game Over - Score : "+String.valueOf(m_Player.getTotalScore()));
+
+            DialogFragment dialogFragment = new DialogFragment();
 
             rollAll.setEnabled(false);
             rollSelected.setEnabled(false);
-            set=0;
-            start=true;
-            m_indexFigure=-1;
         }
 
 
